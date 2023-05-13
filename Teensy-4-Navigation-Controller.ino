@@ -74,7 +74,6 @@ int LOCK_STEP = 0;
 
 unsigned long LAST_ACTION_PERFORMED = 0;
 
-
 int lastX = 1000;
 int lastY = 1000;
 
@@ -304,17 +303,31 @@ void drawKeyboard()
   tft.setFont(Arial_14_Bold);
 
   // CANCEL
-  tft.fillRoundRect(0, 320 - 36, 130, 36, 5, ILI9488_YELLOW);
-  tft.drawRoundRect(0, 320 - 36, 130, 36, 5, ILI9488_WHITE);
+  tft.fillRoundRect(0, 320 - 36, 95, 36, 5, ILI9488_YELLOW);
+  tft.drawRoundRect(0, 320 - 36, 95, 36, 5, ILI9488_WHITE);
   tft.setTextColor(ILI9488_BLACK, ILI9488_YELLOW);
   tft.setCursor(10, 320 - 36 + 12);
-  tft.print("KEYBOARD");
+  tft.print("EXIT");
+
+  // LEFT CLICK
+  tft.fillRoundRect(100, 320 - 36, 135, 36, 5, ILI9488_WHITE);
+  tft.drawRoundRect(100, 320 - 36, 135, 36, 5, ILI9488_WHITE);
+  tft.setTextColor(ILI9488_BLACK, ILI9488_WHITE);
+  tft.setCursor(105, 320 - 36 + 12);
+  tft.print("LEFT CLICK");
+
+  // RIGHT CLICK
+  tft.fillRoundRect(240, 320 - 36, 135, 36, 5, ILI9488_WHITE);
+  tft.drawRoundRect(240, 320 - 36, 135, 36, 5, ILI9488_WHITE);
+  tft.setTextColor(ILI9488_BLACK, ILI9488_WHITE);
+  tft.setCursor(245, 320 - 36 + 12);
+  tft.print("RIGHT CLICK");
 
   // DONE
-  tft.fillRoundRect(480 - 100, 320 - 36, 120, 36, 5, ILI9488_GREEN);
-  tft.drawRoundRect(480 - 100, 320 - 36, 120, 36, 5, ILI9488_WHITE);
+  tft.fillRoundRect(480 - 100, 320 - 36, 100, 36, 5, ILI9488_GREEN);
+  tft.drawRoundRect(480 - 100, 320 - 36, 100, 36, 5, ILI9488_WHITE);
   tft.setTextColor(ILI9488_WHITE, ILI9488_GREEN);
-  tft.setCursor(480 - 120 + 40, 320 - 36 + 12);
+  tft.setCursor(480 - 120 + 35, 320 - 36 + 12);
   tft.print("ENTER");
   tft.setTextColor(ILI9488_BLACK, ILI9488_WHITE);
 
@@ -626,11 +639,25 @@ void handleTouchForRemote(int x, int y)
 
 void handleTouchForKeyboard(int x, int y)
 {
-  if ((y < 480 && y > (480 - 130)) && (x < 320 && x > (320 - 20))) {
+  if ((y < 480 && y > (480 - 95)) && (x < 320 && x > (320 - 20))) {
     SCREEN_TYPE = 2;
     return;
   }
 
+  if ((y < 235 && y > 100) && (x < 320 && x > (320 - 20))) {
+    Mouse.set_buttons(0, 0, 1);
+    delay(50);
+    Mouse.set_buttons(0, 0, 0);
+    return;
+  }
+
+  if ((y < 370 && y > 235) && (x < 320 && x > (320 - 20))) {
+    Mouse.set_buttons(1, 0, 0);
+    delay(50);
+    Mouse.set_buttons(0, 0, 0);
+    return;
+  }
+  
   if ((y < 100) && (x < 320 && x > (320 - 20))) {
     Keyboard.press(KEY_ENTER);
     delay(50);
